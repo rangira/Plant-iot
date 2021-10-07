@@ -12,18 +12,18 @@ $(document).ready(() => {
       this.deviceId = deviceId;
       this.maxLen = 10;
       this.timeData = new Array(this.maxLen);
-      this.temperatureData = new Array(this.maxLen);
-      this.humidityData = new Array(this.maxLen);
+      this.moistureData = new Array(this.maxLen);
+      this.luminosityData = new Array(this.maxLen);
     }
 
-    addData(time, temperature, humidity) {
+    addData(time, moisture, luminosity) {
       this.timeData.push(time);
-      this.temperatureData.push(temperature);
-      this.humidityData.push(humidity || null);
+      this.moistureData.push(moisture);
+      this.luminosityData.push(luminosity || null);
       if (this.timeData.length > this.maxLen) {
         this.timeData.shift();
-        this.temperatureData.shift();
-        this.humidityData.shift();
+        this.moistureData.shift();
+        this.luminosityData.shift();
       }
     }
   }
@@ -57,8 +57,8 @@ $(document).ready(() => {
     datasets: [
       {
         fill: false,
-        label: 'Temperature',
-        yAxisID: 'Temperature',
+        label: 'moisture',
+        yAxisID: 'moisture',
         borderColor: 'rgba(255, 204, 0, 1)',
         pointBoarderColor: 'rgba(255, 204, 0, 1)',
         backgroundColor: 'rgba(255, 204, 0, 0.4)',
@@ -68,8 +68,8 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: 'Humidity',
-        yAxisID: 'Humidity',
+        label: 'luminosity',
+        yAxisID: 'luminosity',
         borderColor: 'rgba(24, 120, 240, 1)',
         pointBoarderColor: 'rgba(24, 120, 240, 1)',
         backgroundColor: 'rgba(24, 120, 240, 0.4)',
@@ -83,19 +83,19 @@ $(document).ready(() => {
   const chartOptions = {
     scales: {
       yAxes: [{
-        id: 'Temperature',
+        id: 'moisture',
         type: 'linear',
         scaleLabel: {
-          labelString: 'Temperature (ºC)',
+          labelString: 'moisture (%)',
           display: true,
         },
         position: 'left',
       },
       {
-        id: 'Humidity',
+        id: 'luminosity',
         type: 'linear',
         scaleLabel: {
-          labelString: 'Humidity (%)',
+          labelString: 'luminosity (%)',
           display: true,
         },
         position: 'right',
@@ -118,21 +118,21 @@ $(document).ready(() => {
   // based on selection
   let needsAutoSelect = true;
   const deviceCount = document.getElementById('deviceCount');
-  const humiditytext = document.getElementById('humidityid');
-  const temptext = document.getElementById('tempid');
+  const luminositytext = document.getElementById('luminosityid');
+  const moisturetext = document.getElementById('moistureid');
   const listOfDevices = document.getElementById('listOfDevices');
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(listOfDevices[listOfDevices.selectedIndex].text);
     chartData.labels = device.timeData;
-    chartData.datasets[0].data = device.temperatureData;
-    chartData.datasets[1].data = device.humidityData;
+    chartData.datasets[0].data = device.moistureData;
+    chartData.datasets[1].data = device.luminosityData;
     myLineChart.update();
   }
   listOfDevices.addEventListener('change', OnSelectionChange, false);
 
   // When a web socket message arrives:
   // 1. Unpack it
-  // 2. Validate it has date/time and temperature
+  // 2. Validate it has date/time and moisture
   // 3. Find or create a cached device to hold the telemetry data
   // 4. Append the telemetry data
   // 5. Update the chart UI
@@ -141,26 +141,39 @@ $(document).ready(() => {
       const messageData = JSON.parse(message.data);
       console.log(messageData);
 
-      // time and either temperature or humidity are required
-      if (!messageData.MessageDate || (!messageData.IotData.temperature && !messageData.IotData.humidity)) {
+      // time and either moisture or luminosity are required
+      if (!messageData.MessageDate || (!messageData.IotData.moisture && !messageData.IotData.luminosity)) {
         return;
       }
 
       // find or add device to list of tracked devices
       const existingDeviceData = trackedDevices.findDevice(messageData.DeviceId);
 
-      if (existingDeviceData) {
-        existingDeviceData.addData(messageData.MessageDate, messageData.IotData.temperature, messageData.IotData.humidity);
-        humiditytext.innerText='Humidity: '+ messageData.IotData.humidity;
-        temptext.innerText= 'Temperature: '+ messageData.IotData.temperature;
+      if (existingDeviceData) 
+      {
+          existingDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);
+          
+          if(messageData.IotData.luminosity)
+          luminositytext.innerText='Luminosity: '+ messageData.IotData.luminosity;
+          if(messageData.IotData.moisture)
+            moisturetext.innerText= 'Moisture: '+ messageData.IotData.moisture;
+         /* if(messageData.IotData.Moisture < 23)
+            Moisturetext.style.color="RED";
+          else if(messageData.IotData.Moisture < 27)
+            Moisturetext.style.color="Orange";
+          else
+            Moisturetext.style.color="Green";*/
+      
       } else {
         const newDeviceData = new DeviceData(messageData.DeviceId);
         trackedDevices.devices.push(newDeviceData);
         const numDevices = trackedDevices.getDevicesCount();
         deviceCount.innerText = numDevices === 1 ? `${numDevices} device` : `${numDevices} devices`;
-        newDeviceData.addData(messageData.MessageDate, messageData.IotData.temperature, messageData.IotData.humidity);
-        humiditytext.innerText='Humidity: '+ messageData.IotData.humidity;
-        temptext.innerText= 'Temperature: '+ messageData.IotData.temperature;
+        newDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);
+        if(messageData.IotData.luminosity)
+        luminositytext.innerText='Luminosity: '+ messageData.IotData.luminosity;
+        if(messageData.IotData.moisture)
+          moisturetext.innerText= 'Moisture: '+ messageData.IotData.moisture;
         // add device to the UI list
         const node = document.createElement('option');
         const nodeText = document.createTextNode(messageData.DeviceId);
