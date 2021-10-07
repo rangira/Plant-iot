@@ -1,0 +1,50 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/chart-device-data.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="css/style.css" rel="stylesheet" />
+
+    <title>Temperature &amp; Humidity Real-time Data</title>
+</head>
+
+<body style="background-image: url('images/backgrnd.jpg')">
+    <h4 class="flexHeader">
+        <span>
+            <span id="deviceCount" style="background-color:#f1f1f1">0 devices</span>
+            <select id="listOfDevices" class="select_box"></select>
+        </span>
+        <span id=heading>Temperature & Humidity Real-time Data</span>
+    </h4>
+    <br>
+    <br>
+    <div style="float:left; width:15%;">
+        <div class="row">
+            <div class="column">
+              <div class="card">
+                  <h5 class="text">Plant Data </h5><br>
+                  <img src="images\Plant1.jpg"><br>
+                  <h6 id="tempid">Temperature:</h6><br>
+                  <h6 id="humidityid">Humidity: </h6><br>
+                  <button type="button" class="btn btn-primary">Water the Plant</button>
+                </div>
+          </div>
+        </div>
+    </div>
+    <div style="float:left; width:70%; margin-left:150px;background-color:#f1f1f1">
+   <div id="chartdiv">
+        <canvas id="iotChart"></canvas>
+    </div>
+        </div>
+</body>
+
+</html>
