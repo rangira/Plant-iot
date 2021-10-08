@@ -14,16 +14,16 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link href="css/style.css" rel="stylesheet" />
 
-    <title>Temperature &amp; Humidity Real-time Data</title>
+    <title>Moisture &amp; Luminosity Real-time Data</title>
 </head>
 
 <body style="background-image: url('images/backgrnd.jpg')">
     <h4 class="flexHeader">
-        <span>
+        <span style="display: none;">
             <span id="deviceCount" style="background-color:#f1f1f1">0 devices</span>
             <select id="listOfDevices" class="select_box"></select>
         </span>
-        <span id=heading>Temperature & Humidity Real-time Data</span>
+        <span id=heading>Moisture & Luminosity Real-time Data</span>
     </h4>
     <br>
     <br>
@@ -33,8 +33,8 @@
               <div class="card">
                   <h5 class="text">Plant Data </h5><br>
                   <img src="images\Plant1.jpg"><br>
-                  <h6 id="tempid">Temperature:</h6><br>
-                  <h6 id="humidityid">Humidity: </h6><br>
+                  <h6 id="moistureid">Moisture:</h6><br>
+                  <h6 id="luminosityid">Luminosity: </h6><br>
                   <button type="button" class="btn btn-primary">Water the Plant</button>
                 </div>
           </div>
