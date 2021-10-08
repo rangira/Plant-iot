@@ -57,7 +57,7 @@ $(document).ready(() => {
     datasets: [
       {
         fill: false,
-        label: 'moisture',
+        label: 'Moisture',
         yAxisID: 'moisture',
         borderColor: 'rgba(255, 204, 0, 1)',
         pointBoarderColor: 'rgba(255, 204, 0, 1)',
@@ -68,7 +68,7 @@ $(document).ready(() => {
       },
       {
         fill: false,
-        label: 'luminosity',
+        label: 'Luminosity',
         yAxisID: 'luminosity',
         borderColor: 'rgba(24, 120, 240, 1)',
         pointBoarderColor: 'rgba(24, 120, 240, 1)',
@@ -86,7 +86,7 @@ $(document).ready(() => {
         id: 'moisture',
         type: 'linear',
         scaleLabel: {
-          labelString: 'moisture (%)',
+          labelString: 'Moisture (%)',
           display: true,
         },
         position: 'left',
@@ -95,7 +95,7 @@ $(document).ready(() => {
         id: 'luminosity',
         type: 'linear',
         scaleLabel: {
-          labelString: 'luminosity (%)',
+          labelString: 'Luminosity (%)',
           display: true,
         },
         position: 'right',
