@@ -142,21 +142,28 @@ $(document).ready(() => {
       {
         AlertNot.children[2].innerText="Moisture has";
         AlertNot.children[3].innerText=MinMois+"%";
+        AlertNot.style.visibility= "visible";
+        AlertNot.firstElementChild.style.visibility = "visible";
       }
     else if(Type=="Lum")
       {
         AlertNot.children[2].innerText="Luminosity has";
         AlertNot.children[3].innerText=MinLum+"%";
+        AlertNot.style.visibility= "visible";
+        AlertNot.firstElementChild.style.visibility = "visible";
       }
+    else if(Type=="None")
+    {
+      AlertNot.style.visibility= "hidden";
+      AlertNot.firstElementChild.style.visibility = "hidden";
+    }
     else
       {
         AlertNot.children[2].innerText="Luminosity & Moisture have";
         AlertNot.children[3].innerText="minimum specified value";
+        AlertNot.style.visibility= "visible";
+        AlertNot.firstElementChild.style.visibility = "visible";
       }
-
-    AlertNot.style.display= "block";
-    AlertNot.firstElementChild.style.display = "block";
-    console.log(AlertNot.children[2]);
   }
 
   // When a web socket message arrives:
@@ -216,6 +223,9 @@ $(document).ready(() => {
      
         else if(messageData.IotData.luminosity <= MinLum)
         alertDisplay("Lum");
+
+        else
+        alertDisplay ("None");
 
       myLineChart.update();
     } catch (err) {
