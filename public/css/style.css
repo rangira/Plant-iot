@@ -71,6 +71,29 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  width: 100%;
+  height: 100%;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: black;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
 /* Float four columns side by side */
 .column {
   float: left;
