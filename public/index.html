@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/gauge-chart@latest/dist/bundle.js"></script>
     <link href="css/style.css" rel="stylesheet" />
 
     <title>Moisture &amp; Luminosity Real-time Data</title>
@@ -39,24 +40,31 @@
     </h4>
     <br>
     <br>
-    <div style="float:left; width:15%;">
+    <div style="float:left; width:18.2%;margin-left:140px;">
         <div class="row">
             <div class="column">
                 <div class="card">
-                    <h5 class="text">Plant Data </h5><br>
-                    <img src="images\Plant1.jpg"><br>
-                    <h6 id="moistureid">Moisture:</h6><br>
-                    <h6 id="luminosityid">Luminosity: </h6><br>
+                    <h5 class="text" style="display: none;">Plant Data </h5><br>
+                    <img src="images\Plant1.jpg" ><br>
+                    <h6 id="moistureid" style="display: none;">Moisture:</h6><br>
+                    <h6 id="luminosityid" style="display: none;">Luminosity: </h6><br>
                     <button id="water-the-plant" type="button" class="btn btn-primary">Water the Plant</button>
                 </div>
             </div>
         </div>
     </div>
-    <div style="float:left; width:70%; margin-left:150px;background-color:#f1f1f1">
-        <div id="chartdiv">
+
+    <div style="float:right; margin-right:80px; width:50%;" class="card">
+        <div id="chartdiv" style="display: none;">
             <canvas id="iotChart"></canvas>
         </div>
+        <br><br>
+        <Strong> Luminosity </Strong>
+        <div id="gaugeArea"> </div>
+        <Strong> Moisture </Strong>
+        <div id="MoisGaugeArea"></div>
     </div>
+
 </body>
 <script src="js/water-the-plant.js" type="text/javascript" charset="utf-8"></script>
 

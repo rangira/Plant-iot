@@ -24,6 +24,7 @@
     "eslint-plugin-react": ">=7.14.3",
     "eslint-plugin-standard": ">=4.0.1",
     "express": ">=4.17.1",
+    "gauge-chart": "^0.5.3",
     "js-guid": "^1.0.0",
     "minimist": ">=1.2.5",
     "rhea-promise": "^1.0.0",

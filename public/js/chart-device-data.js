@@ -114,6 +114,43 @@ $(document).ready(() => {
       backgroundColor: "#f1f1f1",
     });
 
+  //Luminosity Gauge Area
+  // Element inside which you want to see the chart
+  let gaugeElement = document.querySelector('#gaugeArea');
+
+  // Properties of the gauge
+  let gaugeOptions = {
+    hasNeedle: true,
+    needleColor: 'gray',
+    needleUpdateSpeed: 1000,
+    arcColors: ['rgb(235, 71, 16)','rgb(235, 71, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)'],
+    arcDelimiters: [10,20,30,40,50,60,70,80,90],
+    arcPadding: [0,0,0,0,0,0,0,0,0],
+    arcLabels: ['10','20','30','40','50','60','70','80','90'],
+    rangeLabel: ['0','100'],
+    //centralLabel: '50',
+  }
+
+  let test = GaugeChart.gaugeChart(gaugeElement, 300, gaugeOptions);
+
+  //MoistureGauge
+  let gaugeElement2 = document.querySelector('#MoisGaugeArea');
+
+  // Properties of the gauge
+  let gaugeOptions2 = {
+    hasNeedle: true,
+    needleColor: 'gray',
+    needleUpdateSpeed: 1000,
+    arcColors: ['rgb(235, 71, 16)','rgb(235, 71, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)'],
+    arcDelimiters: [10,20,30,40,50,60,70,80,90],
+    arcPadding: [0,0,0,0,0,0,0,0,0],
+    arcLabels: ['10','20','30','40','50','60','70','80','90'],
+    rangeLabel: ['0','100'],
+    //centralLabel: '50',
+  }
+
+  let test2 = GaugeChart.gaugeChart(gaugeElement2, 300, gaugeOptions2);
+
   // Manage a list of devices in the UI, and update which device data the chart is showing
   // based on selection
   let needsAutoSelect = true;
@@ -129,6 +166,8 @@ $(document).ready(() => {
     moisturetext.innerText= 'Moisture: '+ device.moistureData[device.moistureData.length-1];
     luminositytext.innerText='Luminosity: '+ device.luminosityData[device.luminosityData.length-1];
     myLineChart.update();
+    test.updateNeedle(device.luminosityData[device.luminosityData.length-1]);
+    test2.updateNeedle(device.moistureData[device.moistureData.length-1]);
   }
   listOfDevices.addEventListener('change', OnSelectionChange, false);
 
@@ -228,6 +267,9 @@ $(document).ready(() => {
         alertDisplay ("None");
 
       myLineChart.update();
+      console.log(messageData.IotData.moisture);
+      test.updateNeedle(messageData.IotData.luminosity);
+      test2.updateNeedle(messageData.IotData.moisture);
     } catch (err) {
       console.error(err);
     }
