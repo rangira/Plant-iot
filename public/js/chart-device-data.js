@@ -120,15 +120,44 @@ $(document).ready(() => {
   const deviceCount = document.getElementById('deviceCount');
   const luminositytext = document.getElementById('luminosityid');
   const moisturetext = document.getElementById('moistureid');
-  const listOfDevices = document.getElementById('listOfDevices');
+  const listOfDevices = document.getElementById('listOfDevices'); 
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(listOfDevices[listOfDevices.selectedIndex].text);
     chartData.labels = device.timeData;
     chartData.datasets[0].data = device.moistureData;
     chartData.datasets[1].data = device.luminosityData;
+    moisturetext.innerText= 'Moisture: '+ device.moistureData[device.moistureData.length-1];
+    luminositytext.innerText='Luminosity: '+ device.luminosityData[device.luminosityData.length-1];
     myLineChart.update();
   }
   listOfDevices.addEventListener('change', OnSelectionChange, false);
+
+  const MinLum = 20;
+  const MinMois = 20;
+
+  function alertDisplay(Type) {
+    const AlertNot = document.getElementById("alert1");
+
+    if(Type=="Mois")
+      {
+        AlertNot.children[2].innerText="Moisture has";
+        AlertNot.children[3].innerText=MinMois+"%";
+      }
+    else if(Type=="Lum")
+      {
+        AlertNot.children[2].innerText="Luminosity has";
+        AlertNot.children[3].innerText=MinLum+"%";
+      }
+    else
+      {
+        AlertNot.children[2].innerText="Luminosity & Moisture have";
+        AlertNot.children[3].innerText="minimum specified value";
+      }
+
+    AlertNot.style.display= "block";
+    AlertNot.firstElementChild.style.display = "block";
+    console.log(AlertNot.children[2]);
+  }
 
   // When a web socket message arrives:
   // 1. Unpack it
@@ -151,29 +180,13 @@ $(document).ready(() => {
 
       if (existingDeviceData) 
       {
-          existingDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);
-          
-          if(messageData.IotData.luminosity)
-          luminositytext.innerText='Luminosity: '+ messageData.IotData.luminosity;
-          if(messageData.IotData.moisture)
-            moisturetext.innerText= 'Moisture: '+ messageData.IotData.moisture;
-         /* if(messageData.IotData.Moisture < 23)
-            Moisturetext.style.color="RED";
-          else if(messageData.IotData.Moisture < 27)
-            Moisturetext.style.color="Orange";
-          else
-            Moisturetext.style.color="Green";*/
-      
+          existingDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);          
       } else {
         const newDeviceData = new DeviceData(messageData.DeviceId);
         trackedDevices.devices.push(newDeviceData);
         const numDevices = trackedDevices.getDevicesCount();
         deviceCount.innerText = numDevices === 1 ? `${numDevices} device` : `${numDevices} devices`;
-        newDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);
-        if(messageData.IotData.luminosity)
-        luminositytext.innerText='Luminosity: '+ messageData.IotData.luminosity;
-        if(messageData.IotData.moisture)
-          moisturetext.innerText= 'Moisture: '+ messageData.IotData.moisture;
+        newDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);        
         // add device to the UI list
         const node = document.createElement('option');
         const nodeText = document.createTextNode(messageData.DeviceId);
@@ -187,6 +200,22 @@ $(document).ready(() => {
           OnSelectionChange();
         }
       }
+
+        //Add data to display
+        if(messageData.IotData.luminosity)
+        luminositytext.innerText='Luminosity: '+ messageData.IotData.luminosity;
+        if(messageData.IotData.moisture)
+        moisturetext.innerText= 'Moisture: '+ messageData.IotData.moisture ;
+     
+        //Alert notification if Luminosity and Moisture falls below min specified value.
+        if(messageData.IotData.luminosity <= MinLum && messageData.IotData.moisture <= MinMois)
+        alertDisplay("MoisLum");
+     
+        else if(messageData.IotData.moisture <= MinMois)
+        alertDisplay("Mois");
+     
+        else if(messageData.IotData.luminosity <= MinLum)
+        alertDisplay("Lum");
 
       myLineChart.update();
     } catch (err) {
