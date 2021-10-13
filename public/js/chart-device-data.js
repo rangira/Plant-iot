@@ -114,16 +114,25 @@ $(document).ready(() => {
       backgroundColor: "#f1f1f1",
     });
 
-  //Luminosity Gauge Area
+  // Luminosity Gauge Area
   // Element inside which you want to see the chart
   let gaugeElement = document.querySelector('#gaugeArea');
 
   // Properties of the gauge
-  let gaugeOptions = {
+  let luminosityGaugeOptions = {
     hasNeedle: true,
     needleColor: 'gray',
     needleUpdateSpeed: 1000,
-    arcColors: ['rgb(235, 71, 16)','rgb(235, 71, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)'],
+    arcColors: ['rgb(235, 71, 16)',
+                'rgb(235, 71, 16)',
+                'rgb(235, 166, 16)',
+                'rgb(235, 166, 16)',
+                'rgb(235, 166, 16)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)'],
     arcDelimiters: [10,20,30,40,50,60,70,80,90],
     arcPadding: [0,0,0,0,0,0,0,0,0],
     arcLabels: ['10','20','30','40','50','60','70','80','90'],
@@ -131,17 +140,26 @@ $(document).ready(() => {
     //centralLabel: '50',
   }
 
-  let test = GaugeChart.gaugeChart(gaugeElement, 300, gaugeOptions);
+  let luminosityGauge = GaugeChart.gaugeChart(gaugeElement, 300, luminosityGaugeOptions);
 
   //MoistureGauge
   let gaugeElement2 = document.querySelector('#MoisGaugeArea');
 
   // Properties of the gauge
-  let gaugeOptions2 = {
+  let moistureGaugeOptions = {
     hasNeedle: true,
     needleColor: 'gray',
     needleUpdateSpeed: 1000,
-    arcColors: ['rgb(235, 71, 16)','rgb(235, 71, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(235, 166, 16)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)','rgb(48, 186, 17)'],
+    arcColors: ['rgb(235, 71, 16)',
+                'rgb(235, 71, 16)',
+                'rgb(235, 166, 16)',
+                'rgb(235, 166, 16)',
+                'rgb(235, 166, 16)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)',
+                'rgb(48, 186, 17)'],
     arcDelimiters: [10,20,30,40,50,60,70,80,90],
     arcPadding: [0,0,0,0,0,0,0,0,0],
     arcLabels: ['10','20','30','40','50','60','70','80','90'],
@@ -149,7 +167,7 @@ $(document).ready(() => {
     //centralLabel: '50',
   }
 
-  let test2 = GaugeChart.gaugeChart(gaugeElement2, 300, gaugeOptions2);
+  let moistureGauge = GaugeChart.gaugeChart(gaugeElement2, 300, moistureGaugeOptions);
 
   // Manage a list of devices in the UI, and update which device data the chart is showing
   // based on selection
@@ -158,6 +176,7 @@ $(document).ready(() => {
   const luminositytext = document.getElementById('luminosityid');
   const moisturetext = document.getElementById('moistureid');
   const listOfDevices = document.getElementById('listOfDevices'); 
+
   function OnSelectionChange() {
     const device = trackedDevices.findDevice(listOfDevices[listOfDevices.selectedIndex].text);
     chartData.labels = device.timeData;
@@ -166,9 +185,10 @@ $(document).ready(() => {
     moisturetext.innerText= 'Moisture: '+ device.moistureData[device.moistureData.length-1];
     luminositytext.innerText='Luminosity: '+ device.luminosityData[device.luminosityData.length-1];
     myLineChart.update();
-    test.updateNeedle(device.luminosityData[device.luminosityData.length-1]);
-    test2.updateNeedle(device.moistureData[device.moistureData.length-1]);
+    luminosityGauge.updateNeedle(device.luminosityData[device.luminosityData.length-1]);
+    moistureGauge.updateNeedle(device.moistureData[device.moistureData.length-1]);
   }
+
   listOfDevices.addEventListener('change', OnSelectionChange, false);
 
   const MinLum = 20;
@@ -214,25 +234,32 @@ $(document).ready(() => {
   webSocket.onmessage = function onMessage(message) {
     try {
       const messageData = JSON.parse(message.data);
-      console.log(messageData);
+      const messageDate = new Date(messageData.MessageDate);
+      const hours = new Date().getHours();
+      const isDayTime = hours > 6 && hours < 20;
 
       // time and either moisture or luminosity are required
-      if (!messageData.MessageDate || (!messageData.IotData.moisture && !messageData.IotData.luminosity)) {
+      if (!messageData.MessageDate ||
+            (!messageData.IotData.moisture && !messageData.IotData.luminosity)) {
         return;
       }
 
       // find or add device to list of tracked devices
       const existingDeviceData = trackedDevices.findDevice(messageData.DeviceId);
 
-      if (existingDeviceData) 
-      {
-          existingDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);          
+      if (existingDeviceData) {
+        existingDeviceData.addData(messageData.MessageDate,
+                                   messageData.IotData.moisture,
+                                   messageData.IotData.luminosity);
       } else {
         const newDeviceData = new DeviceData(messageData.DeviceId);
         trackedDevices.devices.push(newDeviceData);
         const numDevices = trackedDevices.getDevicesCount();
         deviceCount.innerText = numDevices === 1 ? `${numDevices} device` : `${numDevices} devices`;
-        newDeviceData.addData(messageData.MessageDate, messageData.IotData.moisture, messageData.IotData.luminosity);        
+        newDeviceData.addData(messageData.MessageDate,
+                              messageData.IotData.moisture,
+                              messageData.IotData.luminosity);
+
         // add device to the UI list
         const node = document.createElement('option');
         const nodeText = document.createTextNode(messageData.DeviceId);
@@ -247,28 +274,26 @@ $(document).ready(() => {
         }
       }
 
-        //Add data to display
-        if(messageData.IotData.luminosity)
-        luminositytext.innerText='Luminosity: '+ messageData.IotData.luminosity;
-        if(messageData.IotData.moisture)
-        moisturetext.innerText= 'Moisture: '+ messageData.IotData.moisture ;
+      //Add data to display
+      if (messageData.IotData.luminosity)
+        luminositytext.innerText = 'Luminosity: ' + messageData.IotData.luminosity;
+      if (messageData.IotData.moisture)
+        moisturetext.innerText = 'Moisture: ' + messageData.IotData.moisture;
      
-        //Alert notification if Luminosity and Moisture falls below min specified value.
-        if(messageData.IotData.luminosity <= MinLum && messageData.IotData.moisture <= MinMois)
+      //Alert notification if Luminosity and Moisture falls below min specified value.
+      if ((isDayTime && messageData.IotData.luminosity <= MinLum) &&
+                    messageData.IotData.moisture <= MinMois)
         alertDisplay("MoisLum");
-     
-        else if(messageData.IotData.moisture <= MinMois)
+      else if (messageData.IotData.moisture <= MinMois)
         alertDisplay("Mois");
-     
-        else if(messageData.IotData.luminosity <= MinLum)
+      else if (isDayTime && messageData.IotData.luminosity <= MinLum)
         alertDisplay("Lum");
-
-        else
-        alertDisplay ("None");
+      else
+        alertDisplay("None");
 
       myLineChart.update();
-      test.updateNeedle(messageData.IotData.luminosity);
-      test2.updateNeedle(messageData.IotData.moisture);
+      luminosityGauge.updateNeedle(messageData.IotData.luminosity);
+      moistureGauge.updateNeedle(messageData.IotData.moisture);
     } catch (err) {
       console.error(err);
     }
