@@ -267,7 +267,6 @@ $(document).ready(() => {
         alertDisplay ("None");
 
       myLineChart.update();
-      console.log(messageData.IotData.moisture);
       test.updateNeedle(messageData.IotData.luminosity);
       test2.updateNeedle(messageData.IotData.moisture);
     } catch (err) {
