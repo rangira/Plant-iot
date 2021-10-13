@@ -234,6 +234,7 @@ $(document).ready(() => {
   webSocket.onmessage = function onMessage(message) {
     try {
       const messageData = JSON.parse(message.data);
+      console.log(messageData);
       const messageDate = new Date(messageData.MessageDate);
       const hours = new Date().getHours();
       const isDayTime = hours > 6 && hours < 20;
