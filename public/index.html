@@ -55,16 +55,36 @@
     </div>
 
     <div style="float:right; margin-right:80px; width:50%;" class="card">
-        <div id="chartdiv" style="display: none;">
-            <canvas id="iotChart"></canvas>
-        </div>
-        <br><br>
         <strong id="luminosityid">Luminosity: </strong>
         <div id="gaugeArea"> </div>
         <strong id="moistureid">Moisture:</strong>
         <div id="MoisGaugeArea"></div>
     </div>
 
+    <!-- Accordion card -->
+    <div  style="float:right; margin-top:10px; margin-right:80px; margin-bottom:80px; width:50%;" class="card">
+  
+      <!-- Card header -->
+      <div class="card-header" role="tab" id="headingTwo2">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2"
+          aria-expanded="false" aria-controls="collapseTwo2">
+          <button id="water-the-plant" type="button" style="width:100%;" class="btn btn-primary">Show history</button>
+        </a>
+      </div>
+  
+      <!-- Card body -->
+      <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+        <div class="card-body" style="margin-top:10px;">
+            <div id="chartdiv">
+                <canvas id="iotChart"></canvas>
+            </div>
+        </div>
+      </div>
+  
+    </div>
+    <!-- Accordion card -->
+
+    
 </body>
 <script src="js/water-the-plant.js" type="text/javascript" charset="utf-8"></script>
 
