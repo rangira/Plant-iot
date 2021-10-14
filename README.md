@@ -24,6 +24,11 @@ This repo contains code for a web application, which can read temperature and hu
 
 This tutorial, also published [here](https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-live-data-visualization-in-web-apps), shows how to set up a nodejs website to visualize device data streaming to an [Azure IoT Hub](https://azure.microsoft.com/en-us/services/iot-hub) using the [event hub SDK](https://www.npmjs.com/package/@azure/event-hubs). In this tutorial, you learn how to:
 
+Also look 
+https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-control-device?pivots=programming-language-python
+https://docs.microsoft.com/en-us/azure/iot-develop/quickstart-send-telemetry-iot-hub?pivots=programming-language-python
+https://docs.microsoft.com/en-us/azure/iot-develop/tutorial-connect-device?pivots=programming-language-python
+
 - Create an Azure IoT Hub
 - Configure your IoT hub with a device, a consumer group, and use that information for connecting a device and a service application
 - On a website, register for device telemetry and broadcast it over a web socket to attached clients
