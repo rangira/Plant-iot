@@ -28,6 +28,7 @@ Also look
 https://docs.microsoft.com/en-us/azure/iot-hub/quickstart-control-device?pivots=programming-language-python
 https://docs.microsoft.com/en-us/azure/iot-develop/quickstart-send-telemetry-iot-hub?pivots=programming-language-python
 https://docs.microsoft.com/en-us/azure/iot-develop/tutorial-connect-device?pivots=programming-language-python
+https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/iot-hub/iot-hub-live-data-visualization-in-web-apps.md
 
 - Create an Azure IoT Hub
 - Configure your IoT hub with a device, a consumer group, and use that information for connecting a device and a service application
